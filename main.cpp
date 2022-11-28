@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <windows.h>
 
 
 using namespace std;
@@ -22,8 +23,18 @@ void init(SNAKE & snake)
 }
 
 
-void gotoxy(int x,int y) {
-    printf("%c[%d;%df", 0x1b, y, x);
+//void gotoxy(int x,int y) {
+   // printf("%c[%d;%df", 0x1b, y, x);
+//}
+
+
+void gotoxy(int x, int y)
+{
+    static HANDLE h = NULL;
+    if(!h)
+        h = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD c = { x, y };
+    SetConsoleCursorPosition(h,c);
 }
 void draw(SNAKE & snake)
 {
@@ -32,7 +43,7 @@ void draw(SNAKE & snake)
         cout << "x";
 
     }
-    usleep(1000);
+    sleep(1000);
 }
 
 int main()
