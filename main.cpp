@@ -1,52 +1,97 @@
-#include <iostream>
-#include <unistd.h>
-#include <windows.h>
-
+#include<iostream>
+#include<Windows.h>
+#include"mylib.h"
 
 using namespace std;
-struct NODE{
-    int x,y;
-};
-struct SNAKE
-{
-    NODE A[100];
-    int length;
-};
-void init(SNAKE & snake)
-{
-    snake.length=4;
-    snake.A[0].x=1;snake.A[0].y=1;
-    snake.A[1].x=2;snake.A[1].y=1;
-    snake.A[2].x=3;snake.A[2].y=1;
-    snake.A[3].x=4;snake.A[3].y=1;
 
+void SetWindowSize(SHORT width, SHORT height)
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SMALL_RECT WindowSize;
+    WindowSize.Top = 0;
+    WindowSize.Left = 0;
+    WindowSize.Right = width;
+    WindowSize.Bottom = height;
+ 
+    SetConsoleWindowInfo(hStdout, 1, &WindowSize);
 }
 
-
-//void gotoxy(int x,int y) {
-   // printf("%c[%d;%df", 0x1b, y, x);
-//}
-
-
-void gotoxy(int x, int y)
+void SetScreenBufferSize(SHORT width, SHORT height)
 {
-    static HANDLE h = NULL;
-    if(!h)
-        h = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD c = { x, y };
-    SetConsoleCursorPosition(h,c);
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    COORD NewSize;
+    NewSize.X = width;
+    NewSize.Y = height;
+
+    SetConsoleScreenBufferSize(hStdout, NewSize);
 }
-void draw(SNAKE & snake)
-{
-    for (int i=0; i<snake.length;i++) {
-        gotoxy(snake.A[i].x, snake.A[i].y);
-        cout << "x";
 
+void DisableResizeWindow()
+{
+    HWND hWnd = GetConsoleWindow();
+    SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_SIZEBOX);
+}
+
+void DisableCtrButton(bool Close, bool Min, bool Max)
+{
+    HWND hWnd = GetConsoleWindow();
+    HMENU hMenu = GetSystemMenu(hWnd, false);
+    
+    if (Close == 1)
+    {
+        DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
     }
-    sleep(1000);
+    if (Min == 1)
+    {
+        DeleteMenu(hMenu, SC_MINIMIZE, MF_BYCOMMAND);
+    }
+    if (Max == 1)
+    {
+        DeleteMenu(hMenu, SC_MAXIMIZE, MF_BYCOMMAND);
+    }
 }
 
-int main()
+void ShowScrollbar(BOOL Show)
 {
+    HWND hWnd = GetConsoleWindow();
+    ShowScrollBar(hWnd, SB_BOTH, Show);
+}
 
+void ve_tuong(){
+	char a, b, c, d ,e, f;
+	b = 205;
+	for(int i =6; i < 105; i++){
+		gotoXY(i, 2);
+		cout <<  b;
+		gotoXY(i, 26);
+		cout << b;
+	}
+	a = 186;
+	for(int i =3; i < 26; i++){
+		gotoXY(5, i);
+		cout <<  a;
+		gotoXY(105, i);
+		cout << a;
+	}
+	c = 200;
+	gotoXY(5, 26); cout << c;
+	d = 187;
+	gotoXY(105, 2); cout << d;
+	e = 188;
+	gotoXY(105,26); cout << e;
+	f = 201;
+	gotoXY(5,2) ; cout << f;
+}
+
+int main(){
+	SetWindowSize(200,100);
+	SetScreenBufferSize(200,100);
+	DisableResizeWindow();
+	DisableCtrButton(1,1,1);
+	ShowScrollbar(0);
+	ve_tuong(); cout <<"\n";
+	int a; gotoXY( 15,9) ;cin >> a;
+	return 0;
 }
