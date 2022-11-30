@@ -86,7 +86,7 @@ void ve_tuong(){
 }
 
 
-void hit-wall-die()
+void hit_wall_die()
 {
 	
 }
