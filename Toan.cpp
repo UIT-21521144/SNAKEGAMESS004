@@ -85,6 +85,11 @@ void ve_tuong(){
 	gotoXY(5,2) ; cout << f;
 }
 
+
+void hit-wall-die()
+{
+	
+}
 int main(){
 	SetWindowSize(200,100);
 	SetScreenBufferSize(200,100);
